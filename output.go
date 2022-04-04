@@ -27,10 +27,11 @@ func NewOutput(client *ecapplog.Client, options ...OutputOption) *Output {
 }
 
 type OutputData struct {
-	Time     time.Time
-	Priority ecapplog.Priority
-	Category string
-	Message  string
+	Time            time.Time
+	Priority        ecapplog.Priority
+	Category        string
+	Message         string
+	ExtraCategories []string
 }
 
 func (o *Output) OnResult(p *panyl.Process) (cont bool) {
@@ -102,6 +103,7 @@ func (o *Output) OnResult(p *panyl.Process) (cont bool) {
 	}
 
 	o.client.Log(outdata.Time, outdata.Priority, outdata.Category, outdata.Message,
-		ecapplog.WithSource(util.DoAnsiEscapeString(p.Source)))
+		ecapplog.WithSource(util.DoAnsiEscapeString(p.Source)),
+		ecapplog.WithExtraCategories(outdata.ExtraCategories))
 	return true
 }
