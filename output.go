@@ -71,8 +71,10 @@ func (o *Output) OnResult(p *panyl.Process) (cont bool) {
 
 	// category
 	if dcategory := p.Metadata.StringValue(panyl.Metadata_Category); dcategory != "" {
-		if o.applicationAsCategory && o.appendCategoryToApplication && application != "" {
-			outdata.Category = fmt.Sprintf("%s-%s", application, dcategory)
+		if o.applicationAsCategory && application != "" {
+			if o.appendCategoryToApplication {
+				outdata.Category = fmt.Sprintf("%s-%s", application, dcategory)
+			}
 		} else {
 			outdata.Category = dcategory
 		}
