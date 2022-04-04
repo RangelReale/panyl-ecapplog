@@ -10,8 +10,10 @@ import (
 )
 
 type Output struct {
-	client          *ecapplog.Client
-	customizeOutput CustomizeOutputFunc
+	client                      *ecapplog.Client
+	customizeOutput             CustomizeOutputFunc
+	applicationAsCategory       bool
+	appendCategoryToApplication bool
 }
 
 func NewOutput(client *ecapplog.Client, options ...OutputOption) *Output {
@@ -42,7 +44,7 @@ func (o *Output) OnResult(p *panyl.Process) (cont bool) {
 	// application
 	outdata.Category = "ALL"
 	var application string
-	if application = p.Metadata.StringValue(panyl.Metadata_Application); application != "" {
+	if application = p.Metadata.StringValue(panyl.Metadata_Application); application != "" && o.applicationAsCategory {
 		outdata.Category = application
 	}
 
@@ -69,7 +71,7 @@ func (o *Output) OnResult(p *panyl.Process) (cont bool) {
 
 	// category
 	if dcategory := p.Metadata.StringValue(panyl.Metadata_Category); dcategory != "" {
-		if application != "" {
+		if o.applicationAsCategory && o.appendCategoryToApplication && application != "" {
 			outdata.Category = fmt.Sprintf("%s-%s", application, dcategory)
 		} else {
 			outdata.Category = dcategory

@@ -43,3 +43,15 @@ func WithCustomizeOutput(f CustomizeOutputFunc) OutputOption {
 		output.customizeOutput = f
 	}
 }
+
+func WithApplicationAsCategory(applicationAsCategory bool) OutputOption {
+	return func(output *Output) {
+		output.applicationAsCategory = applicationAsCategory
+	}
+}
+
+func WithAppendCategoryToApplication(appendCategoryToApplication bool) OutputOption {
+	return func(output *Output) {
+		output.appendCategoryToApplication = appendCategoryToApplication
+	}
+}
