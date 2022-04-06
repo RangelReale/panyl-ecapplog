@@ -27,11 +27,12 @@ func NewOutput(client *ecapplog.Client, options ...OutputOption) *Output {
 }
 
 type OutputData struct {
-	Time            time.Time
-	Priority        ecapplog.Priority
-	Category        string
-	Message         string
-	ExtraCategories []string
+	Time             time.Time
+	Priority         ecapplog.Priority
+	Category         string
+	OriginalCategory string
+	Message          string
+	ExtraCategories  []string
 }
 
 func (o *Output) OnResult(p *panyl.Process) (cont bool) {
@@ -81,6 +82,11 @@ func (o *Output) OnResult(p *panyl.Process) (cont bool) {
 		}
 	}
 
+	// original category
+	if doriginalcategory := p.Metadata.StringValue(panyl.Metadata_OriginalCategory); doriginalcategory != "" {
+		outdata.OriginalCategory = doriginalcategory
+	}
+
 	// message
 	if msg := p.Metadata.StringValue(panyl.Metadata_Message); msg != "" {
 		outdata.Message = msg
@@ -104,6 +110,7 @@ func (o *Output) OnResult(p *panyl.Process) (cont bool) {
 
 	o.client.Log(outdata.Time, outdata.Priority, outdata.Category, outdata.Message,
 		ecapplog.WithSource(util.DoAnsiEscapeString(p.Source)),
+		ecapplog.WithOriginalCategory(outdata.OriginalCategory),
 		ecapplog.WithExtraCategories(outdata.ExtraCategories))
 	return true
 }
