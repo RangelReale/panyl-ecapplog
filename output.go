@@ -44,7 +44,7 @@ func (o *Output) OnResult(p *panyl.Process) (cont bool) {
 	}
 
 	// application
-	outdata.Category = "ALL"
+	outdata.Category = "DEFAULT"
 	var application string
 	if application = p.Metadata.StringValue(panyl.Metadata_Application); application != "" && o.applicationAsCategory {
 		outdata.Category = application
