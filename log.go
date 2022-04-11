@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+var _ panyl.Log = (*Log)(nil)
+
 type Log struct {
 	client          *ecapplog.Client
 	sourceCategory  string

@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+var _ panyl.ProcessResult = (*Output)(nil)
+
 type Output struct {
 	client                      *ecapplog.Client
 	customizeOutput             CustomizeOutputFunc
@@ -114,3 +116,5 @@ func (o *Output) OnResult(p *panyl.Process) (cont bool) {
 		ecapplog.WithExtraCategories(outdata.ExtraCategories))
 	return true
 }
+
+func (o *Output) OnFlush() {}
