@@ -1,5 +1,7 @@
 github.com/RangelReale/ecapplog-go v0.8.10 h1:F8Ma1xiQYHdNjB9d2lyay/nVOZTzf+Y04gUngs1b+Nc=
 github.com/RangelReale/ecapplog-go v0.8.10/go.mod h1:3C3kZZqgG39ZoF91jRG8YUFyC3TTH+YV4l0Tbja8AXk=
+github.com/RangelReale/ecapplog-go v0.8.12 h1:H3/fg1+SW0cI95uHIIsgoGiGnLDnvtAbd1D1ZwxVFIg=
+github.com/RangelReale/ecapplog-go v0.8.12/go.mod h1:sXpAMRg+Kw3jgYrqQ/Dwhj1PdbpVBG3+orA4IXs2EQo=
 github.com/RangelReale/panyl v0.6.5 h1:hO+reOxuc2rE3Z148KZZlKLB9bXO6DiB2+doUuQs3sE=
 github.com/RangelReale/panyl v0.6.5/go.mod h1:Aq9XC4mscRfgHVMMXngEqkUjVZayqrBHfgWMBWdzr5c=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
