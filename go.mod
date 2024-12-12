@@ -1,6 +1,6 @@
 module github.com/RangelReale/panyl-ecapplog
 
-go 1.17
+go 1.23
 
 require (
 	github.com/RangelReale/ecapplog-go v0.8.12
