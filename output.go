@@ -119,3 +119,7 @@ func (o *Output) OnResult(p *panyl.Process) (cont bool) {
 }
 
 func (o *Output) OnFlush() {}
+
+func (o *Output) OnClose() {
+	o.client.Close()
+}
