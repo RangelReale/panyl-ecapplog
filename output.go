@@ -3,10 +3,11 @@ package panylecapplog
 import (
 	"encoding/json"
 	"fmt"
+	"time"
+
 	"github.com/RangelReale/ecapplog-go"
 	"github.com/RangelReale/panyl"
 	"github.com/RangelReale/panyl/util"
-	"time"
 )
 
 var _ panyl.ProcessResult = (*Output)(nil)
@@ -46,7 +47,7 @@ func (o *Output) OnResult(p *panyl.Process) (cont bool) {
 	}
 
 	// application
-	outdata.Category = "DEFAULT"
+	outdata.Category = ecapplog.CategoryDEFAULT
 	var application string
 	if application = p.Metadata.StringValue(panyl.Metadata_Application); application != "" && o.applicationAsCategory {
 		outdata.Category = application
