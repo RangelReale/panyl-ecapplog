@@ -42,30 +42,30 @@ func (o *Output) OnResult(p *panyl.Process) (cont bool) {
 	outdata := &OutputData{}
 
 	// timestamp
-	if ts, ok := p.Metadata[panyl.Metadata_Timestamp]; ok {
+	if ts, ok := p.Metadata[panyl.MetadataTimestamp]; ok {
 		outdata.Time = ts.(time.Time)
 	}
 
 	// application
 	outdata.Category = ecapplog.CategoryDEFAULT
 	var application string
-	if application = p.Metadata.StringValue(panyl.Metadata_Application); application != "" && o.applicationAsCategory {
+	if application = p.Metadata.StringValue(panyl.MetadataApplication); application != "" && o.applicationAsCategory {
 		outdata.Category = application
 	}
 
 	// level
 	outdata.Priority = ecapplog.Priority_INFORMATION
-	if level := p.Metadata.StringValue(panyl.Metadata_Level); level != "" {
+	if level := p.Metadata.StringValue(panyl.MetadataLevel); level != "" {
 		switch level {
-		case panyl.MetadataLevel_TRACE:
+		case panyl.MetadataLevelTRACE:
 			outdata.Priority = ecapplog.Priority_TRACE
-		case panyl.MetadataLevel_DEBUG:
+		case panyl.MetadataLevelDEBUG:
 			outdata.Priority = ecapplog.Priority_DEBUG
-		case panyl.MetadataLevel_INFO:
+		case panyl.MetadataLevelINFO:
 			outdata.Priority = ecapplog.Priority_INFORMATION
-		case panyl.MetadataLevel_WARNING:
+		case panyl.MetadataLevelWARNING:
 			outdata.Priority = ecapplog.Priority_WARNING
-		case panyl.MetadataLevel_ERROR:
+		case panyl.MetadataLevelERROR:
 			outdata.Priority = ecapplog.Priority_ERROR
 		case panyl.MetadataLevel_CRITICAL:
 			outdata.Priority = ecapplog.Priority_CRITICAL
@@ -75,7 +75,7 @@ func (o *Output) OnResult(p *panyl.Process) (cont bool) {
 	}
 
 	// category
-	if dcategory := p.Metadata.StringValue(panyl.Metadata_Category); dcategory != "" {
+	if dcategory := p.Metadata.StringValue(panyl.MetadataCategory); dcategory != "" {
 		if o.applicationAsCategory && application != "" {
 			if o.appendCategoryToApplication {
 				outdata.Category = fmt.Sprintf("%s-%s", application, dcategory)
@@ -86,12 +86,12 @@ func (o *Output) OnResult(p *panyl.Process) (cont bool) {
 	}
 
 	// original category
-	if doriginalcategory := p.Metadata.StringValue(panyl.Metadata_OriginalCategory); doriginalcategory != "" {
+	if doriginalcategory := p.Metadata.StringValue(panyl.MetadataOriginalCategory); doriginalcategory != "" {
 		outdata.OriginalCategory = doriginalcategory
 	}
 
 	// message
-	if msg := p.Metadata.StringValue(panyl.Metadata_Message); msg != "" {
+	if msg := p.Metadata.StringValue(panyl.MetadataMessage); msg != "" {
 		outdata.Message = msg
 	} else if len(p.Data) > 0 {
 		dt, err := json.Marshal(p.Data)

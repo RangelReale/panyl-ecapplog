@@ -46,7 +46,7 @@ func (l Log) LogProcess(p *panyl.Process) {
 	}
 
 	var message string
-	if msg := p.Metadata.StringValue(panyl.Metadata_Message); msg != "" {
+	if msg := p.Metadata.StringValue(panyl.MetadataMessage); msg != "" {
 		message = msg
 	} else if len(p.Data) > 0 {
 		dt, err := json.Marshal(p.Data)
