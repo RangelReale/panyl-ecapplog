@@ -1,14 +1,14 @@
 package panylecapplog
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"time"
+
 	"github.com/RangelReale/ecapplog-go"
 	"github.com/RangelReale/panyl"
-	"time"
 )
-
-var _ panyl.Log = (*Log)(nil)
 
 type Log struct {
 	client          *ecapplog.Client
@@ -17,6 +17,8 @@ type Log struct {
 	processCategory string
 	processPriority ecapplog.Priority
 }
+
+var _ panyl.Log = (*Log)(nil)
 
 func NewLog(client *ecapplog.Client, options ...LogOption) *Log {
 	ret := &Log{
@@ -32,12 +34,12 @@ func NewLog(client *ecapplog.Client, options ...LogOption) *Log {
 	return ret
 }
 
-func (l Log) LogSourceLine(n int, line, rawLine string) {
+func (l Log) LogSourceLine(ctx context.Context, n int, line, rawLine string) {
 	l.client.Log(time.Now(), l.sourcePriority, l.sourceCategory,
 		fmt.Sprintf("@@@ SOURCE LINE [%d]: '%s'", n, line), ecapplog.WithSource(rawLine))
 }
 
-func (l Log) LogProcess(p *panyl.Process) {
+func (l Log) LogProcess(ctx context.Context, p *panyl.Process) {
 	var lineno string
 	if p.LineCount > 1 {
 		lineno = fmt.Sprintf("[%d-%d]", p.LineNo, p.LineNo+p.LineCount-1)

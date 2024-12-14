@@ -1,6 +1,7 @@
 package panylecapplog
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -38,7 +39,7 @@ type OutputData struct {
 	ExtraCategories  []string
 }
 
-func (o *Output) OnResult(p *panyl.Process) (cont bool) {
+func (o *Output) OnResult(ctx context.Context, p *panyl.Process) (cont bool) {
 	outdata := &OutputData{}
 
 	// timestamp
@@ -67,10 +68,6 @@ func (o *Output) OnResult(p *panyl.Process) (cont bool) {
 			outdata.Priority = ecapplog.Priority_WARNING
 		case panyl.MetadataLevelERROR:
 			outdata.Priority = ecapplog.Priority_ERROR
-		case panyl.MetadataLevel_CRITICAL:
-			outdata.Priority = ecapplog.Priority_CRITICAL
-		case panyl.MetadataLevel_FATAL:
-			outdata.Priority = ecapplog.Priority_FATAL
 		}
 	}
 
@@ -118,8 +115,8 @@ func (o *Output) OnResult(p *panyl.Process) (cont bool) {
 	return true
 }
 
-func (o *Output) OnFlush() {}
+func (o *Output) OnFlush(ctx context.Context) {}
 
-func (o *Output) OnClose() {
+func (o *Output) OnClose(ctx context.Context) {
 	o.client.Close()
 }
