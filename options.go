@@ -2,7 +2,7 @@ package panylecapplog
 
 import (
 	"github.com/RangelReale/ecapplog-go"
-	"github.com/RangelReale/panyl"
+	"github.com/RangelReale/panyl/v2"
 )
 
 type LogOption func(*Log)

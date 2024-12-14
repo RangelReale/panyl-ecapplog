@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/RangelReale/ecapplog-go"
-	"github.com/RangelReale/panyl"
+	"github.com/RangelReale/panyl/v2"
 )
 
 type Log struct {

@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/RangelReale/ecapplog-go"
-	"github.com/RangelReale/panyl"
-	"github.com/RangelReale/panyl/util"
+	"github.com/RangelReale/panyl/v2"
+	"github.com/RangelReale/panyl/v2/util"
 )
 
 var _ panyl.ProcessResult = (*Output)(nil)
