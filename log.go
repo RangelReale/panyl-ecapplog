@@ -18,7 +18,7 @@ type Log struct {
 	processPriority ecapplog.Priority
 }
 
-var _ panyl.Log = (*Log)(nil)
+var _ panyl.DebugLog = (*Log)(nil)
 
 func NewLog(client *ecapplog.Client, options ...LogOption) *Log {
 	ret := &Log{
