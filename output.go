@@ -39,7 +39,7 @@ type OutputData struct {
 	ExtraCategories  []string
 }
 
-func (o *Output) OnResult(ctx context.Context, p *panyl.Process) (cont bool) {
+func (o *Output) OnResult(ctx context.Context, p *panyl.Item) (cont bool) {
 	outdata := &OutputData{}
 
 	// timestamp

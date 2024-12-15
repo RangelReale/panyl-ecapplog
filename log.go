@@ -39,7 +39,7 @@ func (l Log) LogSourceLine(ctx context.Context, n int, line, rawLine string) {
 		fmt.Sprintf("@@@ SOURCE LINE [%d]: '%s'", n, line), ecapplog.WithSource(rawLine))
 }
 
-func (l Log) LogProcess(ctx context.Context, p *panyl.Process) {
+func (l Log) LogItem(ctx context.Context, p *panyl.Item) {
 	var lineno string
 	if p.LineCount > 1 {
 		lineno = fmt.Sprintf("[%d-%d]", p.LineNo, p.LineNo+p.LineCount-1)
