@@ -39,24 +39,24 @@ type OutputData struct {
 	ExtraCategories  []string
 }
 
-func (o *Output) OnResult(ctx context.Context, p *panyl.Item) (cont bool) {
+func (o *Output) OnResult(ctx context.Context, item *panyl.Item) (cont bool) {
 	outdata := &OutputData{}
 
 	// timestamp
-	if ts, ok := p.Metadata[panyl.MetadataTimestamp]; ok {
+	if ts, ok := item.Metadata[panyl.MetadataTimestamp]; ok {
 		outdata.Time = ts.(time.Time)
 	}
 
 	// application
 	outdata.Category = ecapplog.CategoryDEFAULT
 	var application string
-	if application = p.Metadata.StringValue(panyl.MetadataApplication); application != "" && o.applicationAsCategory {
+	if application = item.Metadata.StringValue(panyl.MetadataApplication); application != "" && o.applicationAsCategory {
 		outdata.Category = application
 	}
 
 	// level
 	outdata.Priority = ecapplog.Priority_INFORMATION
-	if level := p.Metadata.StringValue(panyl.MetadataLevel); level != "" {
+	if level := item.Metadata.StringValue(panyl.MetadataLevel); level != "" {
 		switch level {
 		case panyl.MetadataLevelTRACE:
 			outdata.Priority = ecapplog.Priority_TRACE
@@ -72,7 +72,7 @@ func (o *Output) OnResult(ctx context.Context, p *panyl.Item) (cont bool) {
 	}
 
 	// category
-	if dcategory := p.Metadata.StringValue(panyl.MetadataCategory); dcategory != "" {
+	if dcategory := item.Metadata.StringValue(panyl.MetadataCategory); dcategory != "" {
 		if o.applicationAsCategory && application != "" {
 			if o.appendCategoryToApplication {
 				outdata.Category = fmt.Sprintf("%s-%s", application, dcategory)
@@ -83,33 +83,33 @@ func (o *Output) OnResult(ctx context.Context, p *panyl.Item) (cont bool) {
 	}
 
 	// original category
-	if doriginalcategory := p.Metadata.StringValue(panyl.MetadataOriginalCategory); doriginalcategory != "" {
+	if doriginalcategory := item.Metadata.StringValue(panyl.MetadataOriginalCategory); doriginalcategory != "" {
 		outdata.OriginalCategory = doriginalcategory
 	}
 
 	// message
-	if msg := p.Metadata.StringValue(panyl.MetadataMessage); msg != "" {
+	if msg := item.Metadata.StringValue(panyl.MetadataMessage); msg != "" {
 		outdata.Message = msg
-	} else if len(p.Data) > 0 {
-		dt, err := json.Marshal(p.Data)
+	} else if len(item.Data) > 0 {
+		dt, err := json.Marshal(item.Data)
 		if err != nil {
 			outdata.Message = fmt.Sprintf("Error marshaling data to json: %s", err.Error())
 		} else {
 			outdata.Message = string(dt)
 		}
-	} else if p.Line != "" {
-		outdata.Message = p.Line
+	} else if item.Line != "" {
+		outdata.Message = item.Line
 	}
 
 	// output customization
 	if o.customizeOutput != nil {
-		if !o.customizeOutput(p, outdata) {
+		if !o.customizeOutput(item, outdata) {
 			return
 		}
 	}
 
 	o.client.Log(outdata.Time, outdata.Priority, outdata.Category, outdata.Message,
-		ecapplog.WithSource(util.DoAnsiEscapeString(p.Source)),
+		ecapplog.WithSource(util.DoAnsiEscapeString(item.Source)),
 		ecapplog.WithOriginalCategory(outdata.OriginalCategory),
 		ecapplog.WithExtraCategories(outdata.ExtraCategories))
 	return true

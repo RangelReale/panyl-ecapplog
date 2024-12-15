@@ -36,7 +36,7 @@ func WithProcessPriority(processPriority ecapplog.Priority) LogOption {
 // CustomizeOutputFunc allows customization of data being passed to ECAppLog, by modifying
 // the outdata struct.
 // Return false if you don't want this process to be output.
-type CustomizeOutputFunc func(p *panyl.Item, outdata *OutputData) (doOutput bool)
+type CustomizeOutputFunc func(item *panyl.Item, outdata *OutputData) (doOutput bool)
 
 func WithCustomizeOutput(f CustomizeOutputFunc) OutputOption {
 	return func(output *Output) {
