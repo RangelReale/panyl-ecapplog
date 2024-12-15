@@ -11,7 +11,7 @@ import (
 	"github.com/RangelReale/panyl/v2/util"
 )
 
-var _ panyl.ProcessResult = (*Output)(nil)
+var _ panyl.Output = (*Output)(nil)
 
 type Output struct {
 	client                      *ecapplog.Client
@@ -39,7 +39,7 @@ type OutputData struct {
 	ExtraCategories  []string
 }
 
-func (o *Output) OnResult(ctx context.Context, item *panyl.Item) (cont bool) {
+func (o *Output) OnItem(ctx context.Context, item *panyl.Item) (cont bool) {
 	outdata := &OutputData{}
 
 	// timestamp
