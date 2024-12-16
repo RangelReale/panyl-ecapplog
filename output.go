@@ -36,11 +36,15 @@ type OutputData struct {
 	Category         string
 	OriginalCategory string
 	Message          string
-	ExtraCategories  []string
 }
 
 func (o *Output) OnItem(ctx context.Context, item *panyl.Item) (cont bool) {
 	outdata := &OutputData{}
+
+	logOptions := []ecapplog.LogOption{
+		ecapplog.WithSource(util.DoAnsiEscapeString(item.Source)),
+		ecapplog.WithOriginalCategory(outdata.OriginalCategory),
+	}
 
 	// timestamp
 	if ts, ok := item.Metadata[panyl.MetadataTimestamp]; ok {
@@ -101,6 +105,21 @@ func (o *Output) OnItem(ctx context.Context, item *panyl.Item) (cont bool) {
 		outdata.Message = item.Line
 	}
 
+	// extra categories
+	if item.Metadata.HasValue(MetadataExtraCategories) {
+		logOptions = append(logOptions, ecapplog.WithExtraCategories(item.Metadata.ListValue(MetadataExtraCategories)))
+	}
+
+	// color
+	if color := item.Metadata.StringValue(MetadataColor); color != "" {
+		logOptions = append(logOptions, ecapplog.WithColor(color))
+	}
+
+	// bgcolor
+	if color := item.Metadata.StringValue(MetadataBGColor); color != "" {
+		logOptions = append(logOptions, ecapplog.WithBgColor(color))
+	}
+
 	// output customization
 	if o.customizeOutput != nil {
 		if !o.customizeOutput(item, outdata) {
@@ -108,10 +127,7 @@ func (o *Output) OnItem(ctx context.Context, item *panyl.Item) (cont bool) {
 		}
 	}
 
-	o.client.Log(outdata.Time, outdata.Priority, outdata.Category, outdata.Message,
-		ecapplog.WithSource(util.DoAnsiEscapeString(item.Source)),
-		ecapplog.WithOriginalCategory(outdata.OriginalCategory),
-		ecapplog.WithExtraCategories(outdata.ExtraCategories))
+	o.client.Log(outdata.Time, outdata.Priority, outdata.Category, outdata.Message, logOptions...)
 	return true
 }
 
