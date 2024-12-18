@@ -4,7 +4,7 @@ go 1.23
 
 require (
 	github.com/RangelReale/ecapplog-go v1.0.0
-	github.com/RangelReale/panyl/v2 v2.1.2
+	github.com/RangelReale/panyl/v2 v2.1.3
 )
 
 require (
