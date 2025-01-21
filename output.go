@@ -31,11 +31,10 @@ func NewOutput(client *ecapplog.Client, options ...OutputOption) *Output {
 }
 
 type OutputData struct {
-	Time             time.Time
-	Priority         ecapplog.Priority
-	Category         string
-	OriginalCategory string
-	Message          string
+	Time     time.Time
+	Priority ecapplog.Priority
+	Category string
+	Message  string
 }
 
 func (o *Output) OnItem(ctx context.Context, item *panyl.Item) (cont bool) {
@@ -43,7 +42,6 @@ func (o *Output) OnItem(ctx context.Context, item *panyl.Item) (cont bool) {
 
 	logOptions := []ecapplog.LogOption{
 		ecapplog.WithSource(util.DoAnsiEscapeString(item.Source)),
-		ecapplog.WithOriginalCategory(outdata.OriginalCategory),
 	}
 
 	// timestamp
@@ -88,7 +86,7 @@ func (o *Output) OnItem(ctx context.Context, item *panyl.Item) (cont bool) {
 
 	// original category
 	if doriginalcategory := item.Metadata.StringValue(panyl.MetadataOriginalCategory); doriginalcategory != "" {
-		outdata.OriginalCategory = doriginalcategory
+		logOptions = append(logOptions, ecapplog.WithOriginalCategory(doriginalcategory))
 	}
 
 	// message
