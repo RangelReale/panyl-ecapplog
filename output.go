@@ -104,8 +104,8 @@ func (o *Output) OnItem(ctx context.Context, item *panyl.Item) (cont bool) {
 	}
 
 	// extra categories
-	if item.Metadata.HasValue(MetadataExtraCategories) {
-		logOptions = append(logOptions, ecapplog.WithExtraCategories(item.Metadata.ListValue(MetadataExtraCategories)))
+	if item.Metadata.HasValue(panyl.MetadataExtraCategories) {
+		logOptions = append(logOptions, ecapplog.WithExtraCategories(item.Metadata.ListValue(panyl.MetadataExtraCategories)))
 	}
 
 	// color

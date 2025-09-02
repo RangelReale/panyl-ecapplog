@@ -1,9 +1,11 @@
 package panylecapplog
 
+import "github.com/RangelReale/panyl/v2"
+
 func ExprConstants() map[string]any {
 	return map[string]any{
-		"MetadataECAppLogExtraCategories": MetadataExtraCategories,
-		"MetadataECAppLogColor":           MetadataColor,
-		"MetadataECAppLogBGColor":         MetadataBGColor,
+		"MetadataExtraCategories": panyl.MetadataExtraCategories,
+		"MetadataECAppLogColor":   MetadataColor,
+		"MetadataECAppLogBGColor": MetadataBGColor,
 	}
 }
